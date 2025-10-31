@@ -1,43 +1,69 @@
 # KeyLogger
 
-**Important**: This repository contains code intended for research and educational purposes only. Do not use these tools to monitor, record, or intrude on other people's devices or accounts without explicit, informed, and written consent. Misuse of keylogging or monitoring software may be illegal in your jurisdiction and can cause harm. By using the code in this repository you accept full responsibility for ensuring your use is legal and ethical.
-
 ## Overview
 
-This project provides an educational example of capturing keyboard events on a local machine for learning, testing, and defensive research (for example, detecting or understanding how key capture works so you can build protections). The repository is NOT intended to be used for spying, credential theft, or any malicious activity.
+This project demonstrates a basic client-server architecture for keyboard event monitoring, consisting of two main components:
+1. A client component (`KeyLogger.py`) that captures keyboard events using the `pynput` library
+2. A Flask-based server component (`server.py`) that receives and stores the captured data
 
-Do not run the code on systems you do not own or administer, and always obtain explicit consent from any users or owners before executing monitoring software.
+This is an educational project for learning about:
+- Event-driven programming with Python
+- Client-server architectures
+- HTTP API endpoints and data transmission
+- Input device monitoring techniques
 
+## Important Disclaimer
 
-## Disclaimer (Educational Use Only)
-
-- This repository is provided for academic, research, and defensive security training only.
-- Do not use this code to invade privacy, commit fraud, or violate laws.
-- The author(s) and contributors are not responsible for any misuse.
-- If you are unsure whether your intended use is allowed, consult legal counsel and obtain written consent.
+**This repository is strictly for educational and research purposes:**
+- Use only for academic study and defensive security training
+- Do not run on systems without explicit owner consent
+- Never use for unauthorized monitoring or data collection
+- Misuse may be illegal in your jurisdiction
+- Authors are not responsible for improper use
+- Consult legal counsel if unsure about intended use
 
 ## Requirements
 
 The project dependencies are listed in `requirements.txt`. Install them into a virtual environment before working with the project. The dependencies in this repository are:
 
 ```
-pynput
+pynput    # For keyboard event monitoring
+flask     # For the HTTP server component
+requests  # For HTTP client communications
 ```
 
 To install the requirements:
 
 ```powershell
 # Create and activate a virtual environment (Windows PowerShell)
-python -m venv .venv; .\.venv\Scripts\activate
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-Note: Installing packages is safe and allowed; however, do not execute any key-capture or monitoring scripts on machines without permission.
+## Project Architecture
 
-## Development / Inspecting the Code
+The project consists of two main Python scripts:
 
-If you're here to learn, read the source files to understand how keyboard event handling and recording are implemented. Use static analysis, code reading, and controlled experiments on disposable virtual machines to test behavior — never on production systems or other people's hardware without consent.
+### Server Component (`server.py`)
+- Flask-based HTTP server listening on port 5000
+- Accepts POST requests at the `/upload` endpoint
+- Creates a `logs` directory to store received data
+- Saves data to separate files based on client IP addresses
+- Simple error handling and response status codes
 
+### Client Component (`KeyLogger.py`)
+- Uses `pynput` to capture keyboard events
+- Maintains a buffer of captured keystrokes
+- Formats special keys (F1-F12, Shift, Ctrl, etc.)
+- Sends data to server when Enter is pressed
+- Includes timestamps with data
+- Configurable server URL via `URL` constant
+
+## Configuration
+
+- Server: Edit `server.py` to change the port (default: 5000)
+- Client: Update `URL` in `KeyLogger.py` to match your server's address
 
 ## License
 
